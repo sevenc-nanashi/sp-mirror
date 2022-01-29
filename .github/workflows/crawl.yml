@@ -30,6 +30,7 @@ jobs:
           cat info.json | sed "s/{query_time}/$(date "+%Y\/%m\/%d %H:%M:%S" -ud "9 hours")/g" > info.tmp.json
           rm info.json
           mv info.tmp.json info
+          touch .nojekyll
           git add -A
           git commit -m "Update"
           git push origin gh-pages --force
