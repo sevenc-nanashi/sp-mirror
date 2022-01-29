@@ -85,10 +85,8 @@ async def main():
     os.makedirs("./result/list", exist_ok=True)
     os.makedirs("./result/levels", exist_ok=True)
     coros = []
-    async with session.get("https://servers.purplepalette.net/levels/list") as response:
-        res = await response.json()
-        for page in range(1, int(res["pageCount"]) + 1):
-            coros.append(crawl_page(page))
+    for page in range(1, 20 + 1):
+        coros.append(crawl_page(page))
     urls = await asyncio.gather(*coros)
     coros = []
     for url in set(flatten(urls)):
