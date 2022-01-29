@@ -42,6 +42,7 @@ async def download(url):
                 except aiohttp.client_exceptions.ClientPayloadError:
                     print_prefix(url, "Retrying...")
                     pass  # Retry
+        print_prefix(url, "Done")
 
 
 async def crawl_level(name):
