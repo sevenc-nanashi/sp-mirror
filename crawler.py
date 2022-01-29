@@ -85,7 +85,7 @@ async def main():
     os.makedirs("./result/list", exist_ok=True)
     os.makedirs("./result/levels", exist_ok=True)
     coros = []
-    for page in range(1, 20 + 1):
+    for page in range(5):
         coros.append(crawl_page(page))
     urls = await asyncio.gather(*coros)
     coros = []
