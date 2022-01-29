@@ -40,6 +40,8 @@ async def download(url):
                     await f.write(d)
                     break
                 except aiohttp.client_exceptions.ClientPayloadError:
+                    global session
+                    session = aiohttp.ClientSession()
                     print_prefix(url, "Retrying...")
                     pass  # Retry
         print_prefix(url, "Done")
