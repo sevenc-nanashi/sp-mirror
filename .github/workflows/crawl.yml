@@ -29,7 +29,7 @@ jobs:
           cp -r result/* .
           cat info.json | sed "s/{query_time}/$(date "+%Y\/%m\/%d %H:%M:%S" -ud "9 hours")/g" > info.tmp.json
           rm info.json
-          mv info.tmp.json info.json
+          mv info.tmp.json info
           git add -A
           git commit -m "Update"
           git push origin gh-pages --force
