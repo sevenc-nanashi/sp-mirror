@@ -80,7 +80,6 @@ async def main():
                 coros.append(crawl_page(page))
     urls = await asyncio.gather(*coros)
     coros = []
-    print(str(urls)[:100])
     for url in set(flatten(urls)):
         coros.append(download(url))
     await asyncio.gather(*coros)
