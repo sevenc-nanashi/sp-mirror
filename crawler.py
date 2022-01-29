@@ -32,7 +32,7 @@ async def download(url):
     global session
     while True:
         try:
-            async with session.get(f"https://servers.purplepalette.net/{url}") as response:
+            async with session.get(f"https://servers-legacy.purplepalette.net/{url}") as response:
                 print_prefix(url, "Writing to file...")
                 os.makedirs(os.path.dirname(f"./result{url}"), exist_ok=True)
                 async with aiofiles.open(f"./result{url}", "wb") as f:
@@ -49,7 +49,7 @@ async def download(url):
 
 async def crawl_level(name):
     print_prefix(name, f"Querying /level/{name}")
-    async with session.get(f"https://servers.purplepalette.net/levels/{name}") as response:
+    async with session.get(f"https://servers-legacy.purplepalette.net/levels/{name}") as response:
         if not os.path.exists(f"./result/levels/{name}.json"):
             print_prefix(name, "Writing to file...")
             async with aiofiles.open(f"./result/levels/{name}.json", "w") as f:
@@ -64,7 +64,7 @@ async def crawl_level(name):
 
 async def crawl_page(page):
     print_prefix(page, f"Querying /list?page={page}")
-    async with session.get("https://servers.purplepalette.net/levels/list", params={"page": page}) as response:
+    async with session.get("https://servers-legacy.purplepalette.net/levels/list", params={"page": page}) as response:
         if not os.path.exists(f"./result/list/{page}.json"):
             async with aiofiles.open(f"./result/list/{page}.json", "w") as f:
                 print_prefix(page, "Writing to file...")
