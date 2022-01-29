@@ -69,7 +69,6 @@ async def crawl_page(page):
             async with aiofiles.open(f"./result/list/{page}.json", "w") as f:
                 print_prefix(page, "Writing to file...")
                 data = await response.json()
-                del data["search"]
                 await f.write(json.dumps(data))
         data = await response.json()
     coros = []
