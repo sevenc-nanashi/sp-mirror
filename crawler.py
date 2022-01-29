@@ -29,6 +29,7 @@ def print_prefix(page, content):
 
 
 async def download(url):
+    global session
     while True:
         async with session.get(f"https://servers.purplepalette.net/{url}") as response:
             print_prefix(url, "Writing to file...")
@@ -40,7 +41,6 @@ async def download(url):
                     await f.write(d)
                     break
                 except aiohttp.client_exceptions.ClientPayloadError:
-                    global session
                     session = aiohttp.ClientSession()
                     print_prefix(url, "Retrying...")
                     pass  # Retry
