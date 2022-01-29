@@ -29,10 +29,10 @@ def print_prefix(page, content):
 
 
 async def download(url):
-    async with session.get(f"https://servers.purplepalette.net/{url}") as response:
-        print_prefix(url, "Writing to file...")
-        os.makedirs(os.path.dirname(f"./result{url}"), exist_ok=True)
-        while True:
+    while True:
+        async with session.get(f"https://servers.purplepalette.net/{url}") as response:
+            print_prefix(url, "Writing to file...")
+            os.makedirs(os.path.dirname(f"./result{url}"), exist_ok=True)
             async with aiofiles.open(f"./result{url}", "wb") as f:
                 try:
                     d = await response.read()
@@ -44,7 +44,7 @@ async def download(url):
                     session = aiohttp.ClientSession()
                     print_prefix(url, "Retrying...")
                     pass  # Retry
-        print_prefix(url, "Done")
+    print_prefix(url, "Done")
 
 
 async def crawl_level(name):
