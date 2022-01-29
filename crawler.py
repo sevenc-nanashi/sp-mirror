@@ -32,7 +32,9 @@ async def download(url):
         print_prefix(url, "Writing to file...")
         os.makedirs(os.path.dirname(f"./result{url}"), exist_ok=True)
         async with aiofiles.open(f"./result{url}", "wb") as f:
-            await f.write(await response.read())
+            d = await response.read()
+            await asyncio.sleep(0)
+            await f.write(d)
 
 
 async def crawl_level(name):
