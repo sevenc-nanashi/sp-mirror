@@ -32,8 +32,8 @@ async def download(url):
     async with session.get(f"https://servers.purplepalette.net/{url}") as response:
         print_prefix(url, "Writing to file...")
         os.makedirs(os.path.dirname(f"./result{url}"), exist_ok=True)
-        async with aiofiles.open(f"./result{url}", "wb") as f:
-            while True:
+        while True:
+            async with aiofiles.open(f"./result{url}", "wb") as f:
                 try:
                     d = await response.read()
                     await asyncio.sleep(0)
