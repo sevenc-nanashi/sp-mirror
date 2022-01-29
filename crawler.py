@@ -8,7 +8,7 @@ import json
 
 
 URL_PATTERN = re.compile(r'"/[^"]+"')
-session = aiohttp.ClientSession()
+session = None
 
 
 def flatten(obj):
@@ -18,13 +18,14 @@ def flatten(obj):
 
 
 def print_prefix(page, content):
-    if isinstance(page, int):
-        c = page % 16
-        if c >= 8:
-            c += 62
+    if not isinstance(page, int):
+        c = ord(page[0]) % 16
     else:
-        c = "0"
-    print(f"\033[3{c}m{page}: {content}\033[m")
+        c = page % 16
+    if c >= 8:
+        c += 52
+    c += 30
+    print(f"\033[{c}m{page}: {content}\033[m")
 
 
 async def download(url):
@@ -69,15 +70,16 @@ async def crawl_page(page):
 
 
 async def main():
+    global session
+    session = aiohttp.ClientSession()
     os.makedirs("./result/repository", exist_ok=True)
     os.makedirs("./result/list", exist_ok=True)
     os.makedirs("./result/levels", exist_ok=True)
     coros = []
-    async with aiohttp.ClientSession() as session:
-        async with session.get("https://servers.purplepalette.net/levels/list") as response:
-            res = await response.json()
-            for page in range(1, int(res["pageCount"]) + 1):
-                coros.append(crawl_page(page))
+    async with session.get("https://servers.purplepalette.net/levels/list") as response:
+        res = await response.json()
+        for page in range(1, int(res["pageCount"]) + 1):
+            coros.append(crawl_page(page))
     urls = await asyncio.gather(*coros)
     coros = []
     for url in set(flatten(urls)):
