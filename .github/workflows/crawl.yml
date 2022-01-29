@@ -1,0 +1,35 @@
+name: Crawl SweetPotato
+
+on:
+  schedule:
+    cron: "0 */8 * * *"
+  workflow_dispatch:
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.9"
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+      - name: Run crawler
+        run: |
+          python crawler.py
+      - name: Push to gh-pages
+        run: |
+          git switch -c gh-pages
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+          cp -r result/* .
+          cat info.json | sed "s/{query_time}/$(date +%s%3N)/g" > info.tmp.json
+          rm info.json
+          mv info.tmp.json info.json
+          git add -A
+          git commit -m "Update"
+          git push origin gh-pages --force
