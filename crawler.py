@@ -19,12 +19,12 @@ def flatten(obj):
 
 def print_prefix(page, content):
     if not isinstance(page, int):
-        c = hash(page) % 16
+        c = hash(page) % 14
     else:
-        c = page % 16
-    if c >= 8:
-        c += 52
-    c += 30
+        c = page % 14
+    if c >= 7:
+        c += 53
+    c += 31
     print(f"\033[{c}m{page}: {content}\033[m")
 
 
