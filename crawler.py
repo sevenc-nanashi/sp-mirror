@@ -31,19 +31,19 @@ def print_prefix(page, content):
 async def download(url):
     global session
     while True:
-        async with session.get(f"https://servers.purplepalette.net/{url}") as response:
-            print_prefix(url, "Writing to file...")
-            os.makedirs(os.path.dirname(f"./result{url}"), exist_ok=True)
-            async with aiofiles.open(f"./result{url}", "wb") as f:
-                try:
+        try:
+            async with session.get(f"https://servers.purplepalette.net/{url}") as response:
+                print_prefix(url, "Writing to file...")
+                os.makedirs(os.path.dirname(f"./result{url}"), exist_ok=True)
+                async with aiofiles.open(f"./result{url}", "wb") as f:
                     d = await response.read()
                     await asyncio.sleep(0)
                     await f.write(d)
                     break
-                except aiohttp.client_exceptions.ClientPayloadError:
-                    session = aiohttp.ClientSession()
-                    print_prefix(url, "Retrying...")
-                    pass  # Retry
+        except (aiohttp.client_exceptions.ClientPayloadError, asyncio.exceptions.TimeoutError):
+            session = aiohttp.ClientSession()
+            print_prefix(url, "Retrying...")
+            pass  # Retry
     print_prefix(url, "Done")
 
 
