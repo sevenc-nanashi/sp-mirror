@@ -24,7 +24,7 @@ def print_prefix(page, content):
             c += 62
     else:
         c = "0"
-    print(f"\033[3#{c}m{page}: {content}\033[m")
+    print(f"\033[3{c}m{page}: {content}\033[m")
 
 
 async def download(url):
