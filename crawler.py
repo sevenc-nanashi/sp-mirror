@@ -65,8 +65,8 @@ async def crawl_level(name):
 async def crawl_page(page):
     print_prefix(page, f"Querying /list?page={page}")
     async with session.get("https://servers-legacy.purplepalette.net/levels/list", params={"page": page}) as response:
-        if not os.path.exists(f"./result/list/?page={page}.json"):
-            async with aiofiles.open(f"./result/list/?page={page}.json", "w") as f:
+        if not os.path.exists(f"./result/list/page={page}.json"):
+            async with aiofiles.open(f"./result/list/page={page}.json", "w") as f:
                 print_prefix(page, "Writing to file...")
                 data = await response.json()
                 await f.write(json.dumps(data))
