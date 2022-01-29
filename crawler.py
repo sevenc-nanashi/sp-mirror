@@ -19,7 +19,7 @@ def flatten(obj):
 
 def print_prefix(page, content):
     if not isinstance(page, int):
-        c = ord(page[0]) % 16
+        c = hash(page) % 16
     else:
         c = page % 16
     if c >= 8:
@@ -33,9 +33,15 @@ async def download(url):
         print_prefix(url, "Writing to file...")
         os.makedirs(os.path.dirname(f"./result{url}"), exist_ok=True)
         async with aiofiles.open(f"./result{url}", "wb") as f:
-            d = await response.read()
-            await asyncio.sleep(0)
-            await f.write(d)
+            while True:
+                try:
+                    d = await response.read()
+                    await asyncio.sleep(0)
+                    await f.write(d)
+                    break
+                except aiohttp.client_exceptions.ClientPayloadError:
+                    print_prefix(url, "Retrying...")
+                    pass  # Retry
 
 
 async def crawl_level(name):
