@@ -50,9 +50,9 @@ async def download(url):
 async def crawl_level(name):
     print_prefix(name, f"Querying /level/{name}")
     async with session.get(f"https://servers-legacy.purplepalette.net/levels/{name}") as response:
-        if not os.path.exists(f"./result/levels/{name}.json"):
+        if not os.path.exists(f"./result/levels/{name}"):
             print_prefix(name, "Writing to file...")
-            async with aiofiles.open(f"./result/levels/{name}.json", "w") as f:
+            async with aiofiles.open(f"./result/levels/{name}", "w") as f:
                 await f.write(await response.text())
         data = await response.text()
     urls = []
